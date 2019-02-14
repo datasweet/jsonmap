@@ -1,6 +1,7 @@
-# jsonmap
 
 [![datasweet-logo](https://www.datasweet.fr/wp-content/uploads/2019/02/datasweet-black.png)](http://www.datasweet.fr)
+
+# jsonmap
 
 Jsonmap is a Go package to parse and use raw JSON with silent as Javascript language.
 Jsonmap was inspired by [go-simplejson](https://github.com/bitly/go-simplejson) and the [lodash](https://lodash.com/) javascript library.
@@ -37,7 +38,7 @@ You can use some lodash function utilities :
 ### Tabify
 Tabify was created to flatten a json into tabular datas. We created this functionality to flatten json response from elasticsearch.
 
-### Who are we ?
+## Who are we ?
 We are Datasweet, a french startup providing full service (big) data solutions.
 
 ## Questions ? problems ? suggestions ?
