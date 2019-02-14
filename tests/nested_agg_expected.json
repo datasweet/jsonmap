@@ -1,0 +1,98 @@
+[
+  {
+    "byType": "Final",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "1",
+    "byType#affirmations#byPivot#doc_count": 32,
+    "byType#affirmations#byPivot#sumWeight": 0
+  },
+  {
+    "byType": "Final",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "2",
+    "byType#affirmations#byPivot#doc_count": 16,
+    "byType#affirmations#byPivot#sumWeight": 12.900000154972076
+  },
+  {
+    "byType": "Final",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "3",
+    "byType#affirmations#byPivot#doc_count": 48,
+    "byType#affirmations#byPivot#sumWeight": 42.4000004529953
+  },
+  {
+    "byType": "Final",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "4",
+    "byType#affirmations#byPivot#doc_count": 40,
+    "byType#affirmations#byPivot#sumWeight": 32.400000393390656
+  },
+  {
+    "byType": "Final",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "5",
+    "byType#affirmations#byPivot#doc_count": 20,
+    "byType#affirmations#byPivot#sumWeight": 18.000000178813934
+  },
+  {
+    "byType": "Final",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "6",
+    "byType#affirmations#byPivot#doc_count": 4,
+    "byType#affirmations#byPivot#sumWeight": 3.900000035762787
+  },
+  {
+    "byType": "Initial",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "1",
+    "byType#affirmations#byPivot#doc_count": 32,
+    "byType#affirmations#byPivot#sumWeight": 0
+  },
+  {
+    "byType": "Initial",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "2",
+    "byType#affirmations#byPivot#doc_count": 16,
+    "byType#affirmations#byPivot#sumWeight": 12.20000010728836
+  },
+  {
+    "byType": "Initial",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "3",
+    "byType#affirmations#byPivot#doc_count": 48,
+    "byType#affirmations#byPivot#sumWeight": 39.10000038146973
+  },
+  {
+    "byType": "Initial",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "4",
+    "byType#affirmations#byPivot#doc_count": 40,
+    "byType#affirmations#byPivot#sumWeight": 36.500000298023224
+  },
+  {
+    "byType": "Initial",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "5",
+    "byType#affirmations#byPivot#doc_count": 20,
+    "byType#affirmations#byPivot#sumWeight": 17.200000166893005
+  },
+  {
+    "byType": "Initial",
+    "byType#doc_count": 1,
+    "byType#affirmations#doc_count": 160,
+    "byType#affirmations#byPivot": "6",
+    "byType#affirmations#byPivot#doc_count": 4,
+    "byType#affirmations#byPivot#sumWeight": 2.600000023841858
+  }
+]

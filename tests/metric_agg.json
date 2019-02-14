@@ -1,0 +1,20 @@
+{
+    "took": 82,
+    "timed_out": false,
+    "_shards": {
+      "total": 5,
+      "successful": 5,
+      "failed": 0
+    },
+    "hits": {
+      "total": 3372275,
+      "max_score": 0,
+      "hits": []
+    },
+    "aggregations": {
+      "sum_prenoms": {
+        "value": 75426044
+      }
+    },
+    "status": 200
+  }

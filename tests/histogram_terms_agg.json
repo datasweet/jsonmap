@@ -1,0 +1,201 @@
+{
+  "took": 98,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 768068,
+    "max_score": 0,
+    "hits": []
+  },
+  "aggregations": {
+    "2": {
+      "buckets": [
+        {
+          "4": {
+            "doc_count_error_upper_bound": -1,
+            "sum_other_doc_count": 186054,
+            "buckets": [
+              {
+                "3": {
+                  "value": 129913
+                },
+                "key": "_PRENOMS_RARES",
+                "doc_count": 767
+              },
+              {
+                "3": {
+                  "value": 36853
+                },
+                "key": "LÉA",
+                "doc_count": 383
+              },
+              {
+                "3": {
+                  "value": 33469
+                },
+                "key": "LUCAS",
+                "doc_count": 385
+              },
+              {
+                "3": {
+                  "value": 31912
+                },
+                "key": "THÉO",
+                "doc_count": 384
+              },
+              {
+                "3": {
+                  "value": 31572
+                },
+                "key": "THOMAS",
+                "doc_count": 383
+              }
+            ]
+          },
+          "key": 2000,
+          "doc_count": 188356
+        },
+        {
+          "4": {
+            "doc_count_error_upper_bound": -1,
+            "sum_other_doc_count": 254761,
+            "buckets": [
+              {
+                "3": {
+                  "value": 205893
+                },
+                "key": "_PRENOMS_RARES",
+                "doc_count": 959
+              },
+              {
+                "3": {
+                  "value": 38138
+                },
+                "key": "ENZO",
+                "doc_count": 480
+              },
+              {
+                "3": {
+                  "value": 35994
+                },
+                "key": "LUCAS",
+                "doc_count": 480
+              },
+              {
+                "3": {
+                  "value": 34296
+                },
+                "key": "EMMA",
+                "doc_count": 480
+              },
+              {
+                "3": {
+                  "value": 31166
+                },
+                "key": "NATHAN",
+                "doc_count": 478
+              }
+            ]
+          },
+          "key": 2005,
+          "doc_count": 257638
+        },
+        {
+          "4": {
+            "doc_count_error_upper_bound": -1,
+            "sum_other_doc_count": 266780,
+            "buckets": [
+              {
+                "3": {
+                  "value": 264390
+                },
+                "key": "_PRENOMS_RARES",
+                "doc_count": 960
+              },
+              {
+                "3": {
+                  "value": 29881
+                },
+                "key": "LUCAS",
+                "doc_count": 479
+              },
+              {
+                "3": {
+                  "value": 27309
+                },
+                "key": "NATHAN",
+                "doc_count": 480
+              },
+              {
+                "3": {
+                  "value": 26791
+                },
+                "key": "EMMA",
+                "doc_count": 476
+              },
+              {
+                "3": {
+                  "value": 24937
+                },
+                "key": "GABRIEL",
+                "doc_count": 477
+              }
+            ]
+          },
+          "key": 2010,
+          "doc_count": 269652
+        },
+        {
+          "4": {
+            "doc_count_error_upper_bound": -1,
+            "sum_other_doc_count": 51877,
+            "buckets": [
+              {
+                "3": {
+                  "value": 56107
+                },
+                "key": "_PRENOMS_RARES",
+                "doc_count": 192
+              },
+              {
+                "3": {
+                  "value": 5147
+                },
+                "key": "JULES",
+                "doc_count": 96
+              },
+              {
+                "3": {
+                  "value": 5061
+                },
+                "key": "GABRIEL",
+                "doc_count": 77
+              },
+              {
+                "3": {
+                  "value": 4540
+                },
+                "key": "LOUISE",
+                "doc_count": 96
+              },
+              {
+                "3": {
+                  "value": 4377
+                },
+                "key": "ADAM",
+                "doc_count": 84
+              }
+            ]
+          },
+          "key": 2015,
+          "doc_count": 52422
+        }
+      ]
+    }
+  },
+  "status": 200
+}

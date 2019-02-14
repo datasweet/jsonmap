@@ -1,0 +1,133 @@
+{
+  "took": 0,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": 2,
+    "max_score": 0,
+    "hits": []
+  },
+  "aggregations": {
+    "byType": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
+      "buckets": [
+        {
+          "key": "Final",
+          "doc_count": 1,
+          "affirmations": {
+            "doc_count": 160,
+            "byPivot": {
+              "doc_count_error_upper_bound": 0,
+              "sum_other_doc_count": 0,
+              "buckets": [
+                {
+                  "key": "1",
+                  "doc_count": 32,
+                  "sumWeight": {
+                    "value": 0
+                  }
+                },
+                {
+                  "key": "2",
+                  "doc_count": 16,
+                  "sumWeight": {
+                    "value": 12.900000154972076
+                  }
+                },
+                {
+                  "key": "3",
+                  "doc_count": 48,
+                  "sumWeight": {
+                    "value": 42.4000004529953
+                  }
+                },
+                {
+                  "key": "4",
+                  "doc_count": 40,
+                  "sumWeight": {
+                    "value": 32.400000393390656
+                  }
+                },
+                {
+                  "key": "5",
+                  "doc_count": 20,
+                  "sumWeight": {
+                    "value": 18.000000178813934
+                  }
+                },
+                {
+                  "key": "6",
+                  "doc_count": 4,
+                  "sumWeight": {
+                    "value": 3.900000035762787
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "key": "Initial",
+          "doc_count": 1,
+          "affirmations": {
+            "doc_count": 160,
+            "byPivot": {
+              "doc_count_error_upper_bound": 0,
+              "sum_other_doc_count": 0,
+              "buckets": [
+                {
+                  "key": "1",
+                  "doc_count": 32,
+                  "sumWeight": {
+                    "value": 0
+                  }
+                },
+                {
+                  "key": "2",
+                  "doc_count": 16,
+                  "sumWeight": {
+                    "value": 12.20000010728836
+                  }
+                },
+                {
+                  "key": "3",
+                  "doc_count": 48,
+                  "sumWeight": {
+                    "value": 39.10000038146973
+                  }
+                },
+                {
+                  "key": "4",
+                  "doc_count": 40,
+                  "sumWeight": {
+                    "value": 36.500000298023224
+                  }
+                },
+                {
+                  "key": "5",
+                  "doc_count": 20,
+                  "sumWeight": {
+                    "value": 17.200000166893005
+                  }
+                },
+                {
+                  "key": "6",
+                  "doc_count": 4,
+                  "sumWeight": {
+                    "value": 2.600000023841858
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
