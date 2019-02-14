@@ -1,6 +1,6 @@
 
 # jsonmap
-[![Circle CI](https://circleci.com/gh/datasweet/jsonmap.svg?style=svg)](https://circleci.com/gh/datasweet/jsonmap) [![Go Report Card](https://goreportcard.com/badge/github.com/datasweet/jsonmap)](https://goreportcard.com/report/github.com/datasweet/jsonmap) [![GitHub stars](https://img.shields.io/github/stars/datasweet/jsonmap.svg)](https://github.com/datasweet/jsonmap/stargazers)
+[![Circle CI](https://circleci.com/gh/datasweet/jsonmap.svg?style=svg)](https://circleci.com/gh/datasweet/jsonmap) [![Go Report Card](https://goreportcard.com/badge/github.com/datasweet/jsonmap)](https://goreportcard.com/report/github.com/datasweet/jsonmap) [![GoDoc](https://godoc.org/github.com/datasweet/jsonmap?status.png)](https://godoc.org/github.com/datasweet/jsonmap) [![GitHub stars](https://img.shields.io/github/stars/datasweet/jsonmap.svg)](https://github.com/datasweet/jsonmap/stargazers)
 [![GitHub license](https://img.shields.io/github/license/datasweet/jsonmap.svg)](https://github.com/datasweet/jsonmap/blob/master/LICENSE)
 
 [![datasweet-logo](https://www.datasweet.fr/wp-content/uploads/2019/02/datasweet-black.png)](http://www.datasweet.fr)

@@ -61,7 +61,7 @@ func (j *Json) Bytes() []byte {
 	return bytes
 }
 
-// Marshaler interface encoding/json encode.go
+// MarshalJSON implements marshaler interface from encoding/json encode.go
 func (j *Json) MarshalJSON() ([]byte, error) {
 	if j.IsNil() {
 		return []byte("{}"), nil
@@ -73,7 +73,7 @@ func (j *Json) MarshalJSON() ([]byte, error) {
 	return bytes, nil
 }
 
-// Unmarshaler interface encoding/json decode.go
+// UnmarshalJSON implements unmarshaler interface from encoding/json decode.go
 func (j *Json) UnmarshalJSON(data []byte) error {
 	if j == nil {
 		return errors.New("unmarshal JSON on a nil pointer")
