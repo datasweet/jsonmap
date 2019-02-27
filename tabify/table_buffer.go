@@ -1,17 +1,17 @@
-package jsonmap
+package tabify
 
-type tableWriter struct {
+type tableBuffer struct {
 	deep    int
 	buffers []*rowBuffer
 }
 
-// newTableWriter to create a new writer
-func newTableWriter() *tableWriter {
-	return &tableWriter{}
+// newTableBuffer to create a new table in memory
+func newTableBuffer() *tableBuffer {
+	return &tableBuffer{}
 }
 
 // openRow to create a new row
-func (writer *tableWriter) openRow() {
+func (writer *tableBuffer) openRow() {
 	if writer.deep == 0 {
 		writer.buffers = append(writer.buffers, newRowBuffer())
 	}
@@ -19,7 +19,7 @@ func (writer *tableWriter) openRow() {
 }
 
 // closeRow to close the current row and write values
-func (writer *tableWriter) closeRow() {
+func (writer *tableBuffer) closeRow() {
 	// PANIC IF NO OPENED ?
 	buffer := writer.buffers[len(writer.buffers)-1]
 	buffer.release(writer.deep)
@@ -27,7 +27,7 @@ func (writer *tableWriter) closeRow() {
 }
 
 // cell to create a new cell in row
-func (writer *tableWriter) cell(val *nodeValue) {
+func (writer *tableBuffer) cell(val *nodeValue) {
 	if len(writer.buffers) == 0 {
 		writer.openRow()
 	}
@@ -35,18 +35,15 @@ func (writer *tableWriter) cell(val *nodeValue) {
 	buffer.bufferize(writer.deep, val)
 }
 
-// write to into a dictionary our tabulars datas.
-func (writer *tableWriter) write() []map[string]interface{} {
-	var datas []map[string]interface{}
-
+// write our buffer into a tablewriter
+func (writer *tableBuffer) write(tw TableWriter) {
 	if writer.deep > 0 {
 		writer.closeRow()
 	}
 
 	for _, r := range writer.buffers {
-		datas = append(datas, r.write()...)
+		r.write(tw)
 	}
-	return datas
 }
 
 type rowBuffer struct {
@@ -84,35 +81,31 @@ func (trb *rowBuffer) getMaxDeep() int {
 	return max
 }
 
-func (trb *rowBuffer) extractValues(deep int, to map[string]interface{}) {
+func (trb *rowBuffer) extractValues(deep int, tw TableWriter) {
 	list := trb.values[deep]
 	for _, values := range list {
 		// Copy values
 		for _, v := range values {
-			to[v.key] = v.value
+			tw.Cell(v.key, v.value)
 		}
 	}
 }
 
-func (trb *rowBuffer) write() []map[string]interface{} {
-	var datas []map[string]interface{}
+func (trb *rowBuffer) write(tw TableWriter) {
 	max := trb.getMaxDeep()
-
 	list := trb.values[max]
 	for _, values := range list {
-		row := make(map[string]interface{})
+		tw.OpenRow()
 
 		// Copy current values.
 		for _, v := range values {
-			row[v.key] = v.value
+			tw.Cell(v.key, v.value)
 		}
 
 		for i := max - 1; i > 0; i-- {
-			trb.extractValues(i, row)
+			trb.extractValues(i, tw)
 		}
 
-		datas = append(datas, row)
+		tw.CloseRow()
 	}
-
-	return datas
 }
