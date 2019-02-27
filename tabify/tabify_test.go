@@ -49,7 +49,9 @@ func testfile(t *testing.T, filename string) {
 		t.Fatal("json tabify", err)
 	}
 	jtw := readJSON(t, "./tests/"+filename+"_expected.json")
-	assert.JSONEq(t, jtw.Stringify(), jt.Stringify(), "json table writer")
+	jo := jsonmap.New()
+	jo.Set("", jt)
+	assert.JSONEq(t, jtw.Stringify(), jo.Stringify(), "json table writer")
 
 	// SliceTableWriter
 	st, err := Slice(src, KeyExcluder(excluder), KeyFormatter(formatter))

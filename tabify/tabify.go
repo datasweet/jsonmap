@@ -14,7 +14,7 @@ type TableWriter interface {
 }
 
 // JSON to flatten a json
-func JSON(j *jsonmap.Json, opt ...Option) (*jsonmap.Json, error) {
+func JSON(j *jsonmap.Json, opt ...Option) ([]*jsonmap.Json, error) {
 	t := newTabify(opt...)
 	writer := &JSONTableWriter{}
 
