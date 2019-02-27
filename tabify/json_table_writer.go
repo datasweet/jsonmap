@@ -4,13 +4,13 @@ import "github.com/datasweet/jsonmap"
 
 // JSONTableWriter to writes a json array
 type JSONTableWriter struct {
-	row   map[string]interface{}
-	table []map[string]interface{}
+	row   *jsonmap.Json
+	table []*jsonmap.Json
 }
 
 // OpenRow implements TableWriter interface
 func (w *JSONTableWriter) OpenRow() {
-	w.row = make(map[string]interface{})
+	w.row = jsonmap.New()
 }
 
 // Cell implements TableWriter interface
@@ -18,7 +18,7 @@ func (w *JSONTableWriter) Cell(k string, v interface{}) {
 	if w.row == nil {
 		w.OpenRow()
 	}
-	w.row[k] = v
+	w.row.Set(k, v)
 }
 
 // CloseRow implements TableWriter interface
@@ -27,8 +27,6 @@ func (w *JSONTableWriter) CloseRow() {
 }
 
 // Table to gets the output table
-func (w *JSONTableWriter) JSON() *jsonmap.Json {
-	j := jsonmap.New()
-	j.Set("", w.table)
-	return j
+func (w *JSONTableWriter) JSON() []*jsonmap.Json {
+	return w.table
 }
