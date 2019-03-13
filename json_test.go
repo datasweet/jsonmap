@@ -147,6 +147,11 @@ func TestSet(t *testing.T) {
 	// can create auto array
 	assert.True(t, j.Set("hello", 1, 2, 3, 4, 5))
 	assert.Subset(t, []int{1, 2, 3, 4, 5}, j.Get("hello").AsArray())
+
+	assert.True(t, j.Set("test\\.machin", 45))
+	assert.Equal(t, int64(45), j.Get("test\\.machin").AsInt())
+	assert.True(t, j.Set("choux\\.machin.truc", "bidule"))
+	assert.Equal(t, "bidule", j.Get("choux\\.machin.truc").AsString())
 }
 
 func TestWrap(t *testing.T) {
