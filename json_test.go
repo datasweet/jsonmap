@@ -48,8 +48,8 @@ func TestFromString(t *testing.T) {
 func TestAsString(t *testing.T) {
 	j := FromString(jsonTest)
 	assert.Equal(t, "hello", j.Get("string").AsString())
-	assert.Equal(t, "", j.Get("bool").AsString())
-	assert.Equal(t, "", j.Get("number").AsString())
+	assert.Equal(t, "true", j.Get("bool").AsString())
+	assert.Equal(t, "123", j.Get("number").AsString())
 	assert.Equal(t, "", j.Get("array").AsString())
 	assert.Equal(t, "", j.Get("object").AsString())
 	assert.Equal(t, "", j.Get("unknown").AsString())
@@ -59,7 +59,7 @@ func TestAsBool(t *testing.T) {
 	j := FromString(jsonTest)
 	assert.False(t, j.Get("string").AsBool())
 	assert.True(t, j.Get("bool").AsBool())
-	assert.False(t, j.Get("number").AsBool())
+	assert.True(t, j.Get("number").AsBool())
 	assert.False(t, j.Get("array").AsBool())
 	assert.False(t, j.Get("object").AsBool())
 	assert.False(t, j.Get("unknown").AsBool())
@@ -68,27 +68,17 @@ func TestAsBool(t *testing.T) {
 func TestAsInt(t *testing.T) {
 	j := FromString(jsonTest)
 	assert.Equal(t, int64(0), j.Get("string").AsInt())
-	assert.Equal(t, int64(0), j.Get("bool").AsInt())
+	assert.Equal(t, int64(1), j.Get("bool").AsInt())
 	assert.Equal(t, int64(123), j.Get("number").AsInt())
 	assert.Equal(t, int64(0), j.Get("array").AsInt())
 	assert.Equal(t, int64(0), j.Get("object").AsInt())
 	assert.Equal(t, int64(0), j.Get("unknown").AsInt())
 }
 
-func TestAsUint(t *testing.T) {
-	j := FromString(jsonTest)
-	assert.Equal(t, uint64(0), j.Get("string").AsUint())
-	assert.Equal(t, uint64(0), j.Get("bool").AsUint())
-	assert.Equal(t, uint64(123), j.Get("number").AsUint())
-	assert.Equal(t, uint64(0), j.Get("array").AsUint())
-	assert.Equal(t, uint64(0), j.Get("object").AsUint())
-	assert.Equal(t, uint64(0), j.Get("unknown").AsUint())
-}
-
 func TestAsFloat64(t *testing.T) {
 	j := FromString(jsonTest)
 	assert.Equal(t, float64(0), j.Get("string").AsFloat())
-	assert.Equal(t, float64(0), j.Get("bool").AsFloat())
+	assert.Equal(t, float64(1), j.Get("bool").AsFloat())
 	assert.Equal(t, float64(123), j.Get("number").AsFloat())
 	assert.Equal(t, float64(0), j.Get("array").AsFloat())
 	assert.Equal(t, float64(0), j.Get("object").AsFloat())

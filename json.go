@@ -3,8 +3,10 @@ package jsonmap
 import (
 	"encoding/json"
 	"errors"
-	"reflect"
 	"strconv"
+	"time"
+
+	"github.com/datasweet/cast"
 )
 
 // Json is our wrapper to an unmarshalled json
@@ -129,8 +131,8 @@ func (j *Json) IsValue() bool {
 // AsString casts underlying to string
 // Returns an empty string if not a string
 func (j *Json) AsString() string {
-	if casted, ok := (j.data).(string); ok {
-		return casted
+	if c, ok := cast.AsString(j.data); ok {
+		return c
 	}
 	return ""
 }
@@ -138,8 +140,8 @@ func (j *Json) AsString() string {
 // AsBool casts underlying to boolean
 // Returns false if not a boolean
 func (j *Json) AsBool() bool {
-	if casted, ok := (j.data).(bool); ok {
-		return casted
+	if c, ok := cast.AsBool(j.data); ok {
+		return c
 	}
 	return false
 }
@@ -147,61 +149,28 @@ func (j *Json) AsBool() bool {
 // AsInt casts underlying to int64
 // Returns 0 if not an int
 func (j *Json) AsInt() int64 {
-	switch j.data.(type) {
-	case json.Number:
-		if i, err := (j.data).(json.Number).Int64(); err != nil {
-			return i
-		}
-		return 0
-	case float32, float64:
-		return int64(reflect.ValueOf(j.data).Float())
-	case int, int8, int16, int32, int64:
-		return reflect.ValueOf(j.data).Int()
-	case uint, uint8, uint16, uint32, uint64:
-		return int64(reflect.ValueOf(j.data).Uint())
-	default:
-		return 0
+	if c, ok := cast.AsInt(j.data); ok {
+		return c
 	}
-}
-
-// AsUint casts underlying to uint64
-// Returns 0 if not an int
-func (j *Json) AsUint() uint64 {
-	switch j.data.(type) {
-	case json.Number:
-		if u, err := strconv.ParseUint(j.data.(json.Number).String(), 10, 64); err != nil {
-			return u
-		}
-		return 0
-	case float32, float64:
-		return uint64(reflect.ValueOf(j.data).Float())
-	case int, int8, int16, int32, int64:
-		return uint64(reflect.ValueOf(j.data).Int())
-	case uint, uint8, uint16, uint32, uint64:
-		return reflect.ValueOf(j.data).Uint()
-	default:
-		return 0
-	}
+	return 0
 }
 
 // AsFloat casts underlying to float64
 // Returns 0 if not a float
 func (j *Json) AsFloat() float64 {
-	switch j.data.(type) {
-	case json.Number:
-		if f, err := (j.data).(json.Number).Float64(); err != nil {
-			return f
-		}
-		return 0
-	case float32, float64:
-		return reflect.ValueOf(j.data).Float()
-	case int, int8, int16, int32, int64:
-		return float64(reflect.ValueOf(j.data).Int())
-	case uint, uint8, uint16, uint32, uint64:
-		return float64(reflect.ValueOf(j.data).Uint())
-	default:
-		return 0
+	if c, ok := cast.AsFloat(j.data); ok {
+		return c
 	}
+	return 0
+}
+
+// AsDatetime casts underlying to time.Time
+// Returns time.Time{} if not a time
+func (j *Json) AsDatetime() time.Time {
+	if c, ok := cast.AsDatetime(j.data); ok {
+		return c
+	}
+	return time.Time{}
 }
 
 // Get gets the value at path of object. If not found returns Nils() value
