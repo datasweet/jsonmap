@@ -6,47 +6,46 @@ import (
 	"github.com/datasweet/jsonmap"
 )
 
-// TableWriter is an interface to define a table writer
-type TableWriter interface {
-	OpenRow()
-	Cell(k string, v interface{})
-	CloseRow()
+// Tabify using a custom TableWriter
+func Tabify(j *jsonmap.Json, writer TableWriter, opt ...Option) error {
+	if jsonmap.IsNil(j) {
+		return errors.New("nil json")
+	}
+	if writer == nil {
+		return errors.New("nil table writer")
+	}
+	t := newTabify(opt...)
+	if err := t.Compute(j, writer); err != nil {
+		return err
+	}
+	return nil
 }
 
 // JSON to flatten a json
 func JSON(j *jsonmap.Json, opt ...Option) ([]*jsonmap.Json, error) {
-	t := newTabify(opt...)
-	writer := &JSONTableWriter{}
-
-	if err := t.Compute(j, writer); err != nil {
+	writer := &jsonTableWriter{}
+	if err := Tabify(j, writer, opt...); err != nil {
 		return nil, err
 	}
-
 	return writer.JSON(), nil
 }
 
 // Slice to tabify into a slice array.
 // Note : first row contains headers
-func Slice(j *jsonmap.Json, opt ...Option) ([][]interface{}, error) {
-	t := newTabify(opt...)
-	writer := &SliceTableWriter{}
-
-	if err := t.Compute(j, writer); err != nil {
+func Slice(j *jsonmap.Json, withHeaders bool, opt ...Option) ([][]interface{}, error) {
+	writer := &sliceTableWriter{WithHeaders: withHeaders}
+	if err := Tabify(j, writer, opt...); err != nil {
 		return nil, err
 	}
-
 	return writer.Table(), nil
 }
 
 // Map to tabify into a map array
 func Map(j *jsonmap.Json, opt ...Option) ([]map[string]interface{}, error) {
-	t := newTabify(opt...)
-	writer := &MapTableWriter{}
-
-	if err := t.Compute(j, writer); err != nil {
+	writer := &mapTableWriter{}
+	if err := Tabify(j, writer, opt...); err != nil {
 		return nil, err
 	}
-
 	return writer.Table(), nil
 }
 

@@ -11,10 +11,6 @@ jobs:
           name: run tests
           command: |
             dep ensure
-            go build -v
-      - run:
-          name: run tests
-          command: |
             go fmt ./...
             go vet ./...
             go test -v ./...
