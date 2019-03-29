@@ -1,4 +1,4 @@
-package tabify
+package tabify_test
 
 import (
 	"encoding/json"
@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/datasweet/jsonmap"
+	"github.com/datasweet/jsonmap/tabify"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -44,7 +45,7 @@ func testfile(t *testing.T, filename string) {
 	}
 
 	// JSONTableWriter
-	jt, err := JSON(src, KeyExcluder(excluder), KeyFormatter(formatter))
+	jt, err := tabify.JSON(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
 	if err != nil {
 		t.Fatal("json tabify", err)
 	}
@@ -54,7 +55,7 @@ func testfile(t *testing.T, filename string) {
 	assert.JSONEq(t, jtw.Stringify(), jo.Stringify(), "json table writer")
 
 	// SliceTableWriter
-	st, err := Slice(src, KeyExcluder(excluder), KeyFormatter(formatter))
+	st, err := tabify.Slice(src, true, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
 	if err != nil {
 		t.Fatal("slice tabify", err)
 	}
@@ -66,7 +67,7 @@ func testfile(t *testing.T, filename string) {
 	assert.JSONEq(t, stw.Stringify(), string(mst[:]), "slice table writer")
 
 	// MapTableWriter
-	mt, err := Map(src, KeyExcluder(excluder), KeyFormatter(formatter))
+	mt, err := tabify.Map(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
 	if err != nil {
 		t.Fatal("map tabify", err)
 	}
