@@ -25,3 +25,13 @@ func createPath(path string) []string {
 	}
 	return keys
 }
+
+// EscapePath to escape a path
+// Example
+// - By default  jsonmap.Set("message.raw", "hello world !")
+//   =>  { "message": { "raw": "hello world !" }}
+// - With escape jsonmap.Set(jsonmap.EscapePath("message.raw", "hello world !"))
+//   => { "message.raw": "hello world !" }}
+func EscapePath(path string) string {
+	return strings.Replace(path, ".", "\\.", -1)
+}
