@@ -27,10 +27,7 @@ func Nil() *Json {
 // FromBytes to creates a Json from bytes
 func FromBytes(bytes []byte) *Json {
 	j := new(Json)
-	err := j.UnmarshalJSON(bytes)
-	if err != nil {
-		return Nil()
-	}
+	j.UnmarshalJSON(bytes)
 	return j
 }
 
@@ -41,10 +38,6 @@ func FromString(str string) *Json {
 
 // FromMap to creates a Json from an unmarshalled map
 func FromMap(m map[string]interface{}) *Json {
-	if m == nil {
-		return Nil()
-	}
-
 	return &Json{
 		data: m,
 	}
@@ -64,11 +57,11 @@ func (j *Json) Bytes() []byte {
 // MarshalJSON implements marshaler interface from encoding/json encode.go
 func (j *Json) MarshalJSON() ([]byte, error) {
 	if j.IsNil() {
-		return []byte("{}"), nil
+		return []byte("null"), nil
 	}
 	bytes, err := json.Marshal(j.data)
 	if err != nil {
-		return []byte("{}"), err
+		return []byte("null"), err
 	}
 	return bytes, nil
 }
@@ -440,4 +433,14 @@ func (j *Json) Values() []*Json {
 	j.ForEach(callback)
 
 	return values
+}
+
+// Clone to clone a json
+// Not the best performance cause we marshal / unmarshal
+func (j *Json) Clone() *Json {
+	bytes, err := j.MarshalJSON()
+	if err != nil {
+		return Nil()
+	}
+	return FromBytes(bytes)
 }

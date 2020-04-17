@@ -1,15 +1,15 @@
 package tabify
 
 import (
+	"datasweet/jsonmap"
+	"fmt"
 	"sort"
-
-	"github.com/datasweet/jsonmap"
 )
 
 // TableWriter is an interface to define a table writer
 type TableWriter interface {
 	OpenRow()
-	Cell(k string, v interface{})
+	Cell(k string, v interface{}, deep int)
 	CloseRow()
 }
 
@@ -23,7 +23,7 @@ func (w *jsonTableWriter) OpenRow() {
 	w.row = jsonmap.New()
 }
 
-func (w *jsonTableWriter) Cell(k string, v interface{}) {
+func (w *jsonTableWriter) Cell(k string, v interface{}, deep int) {
 	if w.row == nil {
 		w.OpenRow()
 	}
@@ -48,7 +48,7 @@ func (w *mapTableWriter) OpenRow() {
 	w.row = make(map[string]interface{})
 }
 
-func (w *mapTableWriter) Cell(k string, v interface{}) {
+func (w *mapTableWriter) Cell(k string, v interface{}, deep int) {
 	w.row[k] = v
 }
 
@@ -62,37 +62,49 @@ func (w *mapTableWriter) Table() []map[string]interface{} {
 
 // sliceTableWriter to writes into a slice
 type sliceTableWriter struct {
-	cols        []string
-	row         map[string]interface{}
-	table       [][]interface{}
-	len         int
-	WithHeaders bool
+	cols  []*sliceCol
+	row   map[string]interface{}
+	table [][]interface{}
+	len   int
+}
+
+type sliceCol struct {
+	name string
+	deep int
 }
 
 func (w *sliceTableWriter) OpenRow() {
 	w.row = make(map[string]interface{})
 }
 
-func (w *sliceTableWriter) Cell(k string, v interface{}) {
+func (w *sliceTableWriter) Cell(k string, v interface{}, deep int) {
 	if w.len == 0 {
-		w.cols = append(w.cols, k)
+		w.cols = append(w.cols, &sliceCol{k, deep})
 	}
 	w.row[k] = v
 }
 
 func (w *sliceTableWriter) CloseRow() {
-	if w.WithHeaders && w.len == 0 {
-		sort.Strings(w.cols)
+	if w.len == 0 {
+		// compute cols
+		sort.Slice(w.cols, func(i, j int) bool {
+			if w.cols[i].deep == w.cols[j].deep {
+				return w.cols[i].name < w.cols[j].name
+			}
+			return w.cols[i].deep < w.cols[j].deep
+		})
+
 		c := make([]interface{}, len(w.cols))
 		for i, col := range w.cols {
-			c[i] = col
+			c[i] = col.name
 		}
 		w.table = append(w.table, c)
+		fmt.Println()
 	}
 
 	r := make([]interface{}, len(w.cols))
 	for i, col := range w.cols {
-		if v, ok := w.row[col]; ok {
+		if v, ok := w.row[col.name]; ok {
 			r[i] = v
 		}
 	}

@@ -1,0 +1,263 @@
+{
+    "took": 1,
+    "timed_out": false,
+    "_shards": {
+      "total": 5,
+      "successful": 5,
+      "skipped": 0,
+      "failed": 0
+    },
+    "hits": {
+      "total": 15810,
+      "max_score": 0,
+      "hits": []
+    },
+    "aggregations": {
+      "2": {
+        "buckets": [
+          {
+            "3": {
+              "buckets": [
+                {
+                  "4": {
+                    "doc_count_error_upper_bound": -1,
+                    "sum_other_doc_count": 2385,
+                    "buckets": [
+                      {
+                        "1": {
+                          "value": 255187660
+                        },
+                        "key": "53",
+                        "doc_count": 156
+                      },
+                      {
+                        "1": {
+                          "value": 242023980
+                        },
+                        "key": "38",
+                        "doc_count": 181
+                      },
+                      {
+                        "1": {
+                          "value": 177748981
+                        },
+                        "key": "13",
+                        "doc_count": 235
+                      },
+                      {
+                        "1": {
+                          "value": 160380530
+                        },
+                        "key": "57",
+                        "doc_count": 179
+                      },
+                      {
+                        "1": {
+                          "value": 149837920
+                        },
+                        "key": "62",
+                        "doc_count": 110
+                      }
+                    ]
+                  },
+                  "key": 7,
+                  "doc_count": 3246
+                },
+                {
+                  "4": {
+                    "doc_count_error_upper_bound": -1,
+                    "sum_other_doc_count": 2194,
+                    "buckets": [
+                      {
+                        "1": {
+                          "value": 156764260
+                        },
+                        "key": "38",
+                        "doc_count": 188
+                      },
+                      {
+                        "1": {
+                          "value": 133461606
+                        },
+                        "key": "57",
+                        "doc_count": 181
+                      },
+                      {
+                        "1": {
+                          "value": 125295235
+                        },
+                        "key": "13",
+                        "doc_count": 198
+                      },
+                      {
+                        "1": {
+                          "value": 122926445
+                        },
+                        "key": "53",
+                        "doc_count": 140
+                      },
+                      {
+                        "1": {
+                          "value": 110164820
+                        },
+                        "key": "62",
+                        "doc_count": 121
+                      }
+                    ]
+                  },
+                  "key": 8,
+                  "doc_count": 3022
+                },
+                {
+                  "4": {
+                    "doc_count_error_upper_bound": -1,
+                    "sum_other_doc_count": 2465,
+                    "buckets": [
+                      {
+                        "1": {
+                          "value": 254565135
+                        },
+                        "key": "38",
+                        "doc_count": 195
+                      },
+                      {
+                        "1": {
+                          "value": 215214320
+                        },
+                        "key": "53",
+                        "doc_count": 116
+                      },
+                      {
+                        "1": {
+                          "value": 153625560
+                        },
+                        "key": "57",
+                        "doc_count": 149
+                      },
+                      {
+                        "1": {
+                          "value": 148241771
+                        },
+                        "key": "13",
+                        "doc_count": 207
+                      },
+                      {
+                        "1": {
+                          "value": 124179771
+                        },
+                        "key": "62",
+                        "doc_count": 98
+                      }
+                    ]
+                  },
+                  "key": 9,
+                  "doc_count": 3230
+                }
+              ]
+            },
+            "key": 2017,
+            "doc_count": 9498
+          },
+          {
+            "3": {
+              "buckets": [
+                {
+                  "4": {
+                    "doc_count_error_upper_bound": -1,
+                    "sum_other_doc_count": 2521,
+                    "buckets": [
+                      {
+                        "1": {
+                          "value": 273097085
+                        },
+                        "key": "38",
+                        "doc_count": 172
+                      },
+                      {
+                        "1": {
+                          "value": 254692570
+                        },
+                        "key": "53",
+                        "doc_count": 140
+                      },
+                      {
+                        "1": {
+                          "value": 191291965
+                        },
+                        "key": "13",
+                        "doc_count": 204
+                      },
+                      {
+                        "1": {
+                          "value": 176124380
+                        },
+                        "key": "57",
+                        "doc_count": 154
+                      },
+                      {
+                        "1": {
+                          "value": 168446946
+                        },
+                        "key": "62",
+                        "doc_count": 130
+                      }
+                    ]
+                  },
+                  "key": 7,
+                  "doc_count": 3321
+                },
+                {
+                  "4": {
+                    "doc_count_error_upper_bound": -1,
+                    "sum_other_doc_count": 2167,
+                    "buckets": [
+                      {
+                        "1": {
+                          "value": 158230375
+                        },
+                        "key": "38",
+                        "doc_count": 173
+                      },
+                      {
+                        "1": {
+                          "value": 141642890
+                        },
+                        "key": "13",
+                        "doc_count": 211
+                      },
+                      {
+                        "1": {
+                          "value": 137446790
+                        },
+                        "key": "57",
+                        "doc_count": 195
+                      },
+                      {
+                        "1": {
+                          "value": 128803970
+                        },
+                        "key": "62",
+                        "doc_count": 121
+                      },
+                      {
+                        "1": {
+                          "value": 110624770
+                        },
+                        "key": "53",
+                        "doc_count": 124
+                      }
+                    ]
+                  },
+                  "key": 8,
+                  "doc_count": 2991
+                }
+              ]
+            },
+            "key": 2018,
+            "doc_count": 6312
+          }
+        ]
+      }
+    },
+    "status": 200
+  }
