@@ -1,14 +1,15 @@
-package jsonmap
+package jsonmap_test
 
 import (
 	"fmt"
 	"testing"
 
+	"github.com/datasweet/jsonmap"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestFilter(t *testing.T) {
-	values := Filter(FromString("[1, 2, 3, 4, 5]").Values(), func(v *Json) bool {
+	values := jsonmap.Filter(jsonmap.FromString("[1, 2, 3, 4, 5]").Values(), func(v *jsonmap.Json) bool {
 		return v.AsInt()%2 == 1
 	})
 	assert.Equal(t, 3, len(values))
@@ -16,7 +17,7 @@ func TestFilter(t *testing.T) {
 		assert.Equal(t, int64(2*i+1), v.AsInt())
 	}
 
-	values = Filter(FromString(`[{ "value": 1 }, { "value": 2 }, { "value": 3 }, { "value": 4 }, { "value": 5 }]`).Values(), func(v *Json) bool {
+	values = jsonmap.Filter(jsonmap.FromString(`[{ "value": 1 }, { "value": 2 }, { "value": 3 }, { "value": 4 }, { "value": 5 }]`).Values(), func(v *jsonmap.Json) bool {
 		return v.Get("value").AsInt()%2 == 1
 	})
 	assert.Equal(t, 3, len(values))
@@ -26,11 +27,11 @@ func TestFilter(t *testing.T) {
 }
 
 func TestMap(t *testing.T) {
-	values := Map(FromString("[1, 2, 3, 4, 5]").Values(), func(v *Json) *Json {
+	values := jsonmap.Map(jsonmap.FromString("[1, 2, 3, 4, 5]").Values(), func(v *jsonmap.Json) *jsonmap.Json {
 		if v.AsInt()%2 == 1 {
 			return v
 		}
-		return Nil()
+		return jsonmap.Nil()
 	})
 	assert.Equal(t, 5, len(values))
 	for i, v := range values {
@@ -43,17 +44,17 @@ func TestMap(t *testing.T) {
 }
 
 func TestAssign(t *testing.T) {
-	json1 := FromString(`{
+	json1 := jsonmap.FromString(`{
 		"string": "hello",
 		"bool": true,
 		"number": 123
 	}`)
 
-	json2 := FromString(`{
+	json2 := jsonmap.FromString(`{
 		"array": [1,2,3,4,5]
 	}`)
 
-	json3 := FromString(`{
+	json3 := jsonmap.FromString(`{
 		"object": {
 			"test": "world",
 			"sub": [
@@ -63,9 +64,9 @@ func TestAssign(t *testing.T) {
 		}
 	}`)
 
-	j := Assign(FromString(`{"hello": "world" }`), json1, json2, json3)
+	j := jsonmap.Assign(jsonmap.FromString(`{"hello": "world" }`), json1, json2, json3)
 
-	expected := FromString(`{
+	expected := jsonmap.FromString(`{
 		"hello": "world",
 		"string": "hello",
 		"bool": true,

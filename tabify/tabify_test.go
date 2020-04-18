@@ -6,9 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"datasweet/jsonmap"
-	"datasweet/jsonmap/tabify"
-
+	"github.com/datasweet/jsonmap"
+	"github.com/datasweet/jsonmap/tabify"
 	"github.com/stretchr/testify/assert"
 )
 

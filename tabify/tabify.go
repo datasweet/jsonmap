@@ -3,7 +3,7 @@ package tabify
 import (
 	"errors"
 
-	"datasweet/jsonmap"
+	"github.com/datasweet/jsonmap"
 )
 
 // Tabify using a custom TableWriter

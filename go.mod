@@ -1,4 +1,4 @@
-module datasweet/jsonmap
+module github.com/datasweet/jsonmap
 
 go 1.14
 
