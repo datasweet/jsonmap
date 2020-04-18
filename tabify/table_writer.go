@@ -1,9 +1,9 @@
 package tabify
 
 import (
-	"datasweet/jsonmap"
-	"fmt"
 	"sort"
+
+	"github.com/datasweet/jsonmap"
 )
 
 // TableWriter is an interface to define a table writer
@@ -99,7 +99,6 @@ func (w *sliceTableWriter) CloseRow() {
 			c[i] = col.name
 		}
 		w.table = append(w.table, c)
-		fmt.Println()
 	}
 
 	r := make([]interface{}, len(w.cols))

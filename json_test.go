@@ -1,10 +1,11 @@
-package jsonmap
+package jsonmap_test
 
 import (
 	"encoding/json"
 	"sort"
 	"testing"
 
+	"github.com/datasweet/jsonmap"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -25,19 +26,19 @@ const jsonTest = `
 `
 
 func TestNewJson(t *testing.T) {
-	j := New()
+	j := jsonmap.New()
 	assert.False(t, j.IsNil())
 	assert.Equal(t, "{}", j.Stringify())
 }
 
 func TestFromWrongString(t *testing.T) {
-	j := FromString("hello")
+	j := jsonmap.FromString("hello")
 	assert.True(t, j.IsNil())
 	assert.Equal(t, "null", j.Stringify())
 }
 
 func TestFromString(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.False(t, j.IsNil())
 	assert.False(t, j.IsValue())
 	assert.False(t, j.IsArray())
@@ -45,7 +46,7 @@ func TestFromString(t *testing.T) {
 }
 
 func TestAsString(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.Equal(t, "hello", j.Get("string").AsString())
 	assert.Equal(t, "", j.Get("bool").AsString())
 	assert.Equal(t, "", j.Get("number").AsString())
@@ -55,7 +56,7 @@ func TestAsString(t *testing.T) {
 }
 
 func TestAsBool(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.False(t, j.Get("string").AsBool())
 	assert.True(t, j.Get("bool").AsBool())
 	assert.False(t, j.Get("number").AsBool())
@@ -65,7 +66,7 @@ func TestAsBool(t *testing.T) {
 }
 
 func TestAsInt(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.Equal(t, int64(0), j.Get("string").AsInt())
 	assert.Equal(t, int64(0), j.Get("bool").AsInt())
 	assert.Equal(t, int64(123), j.Get("number").AsInt())
@@ -75,7 +76,7 @@ func TestAsInt(t *testing.T) {
 }
 
 func TestAsUint(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.Equal(t, uint64(0), j.Get("string").AsUint())
 	assert.Equal(t, uint64(0), j.Get("bool").AsUint())
 	assert.Equal(t, uint64(123), j.Get("number").AsUint())
@@ -85,7 +86,7 @@ func TestAsUint(t *testing.T) {
 }
 
 func TestAsFloat64(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.Equal(t, float64(0), j.Get("string").AsFloat())
 	assert.Equal(t, float64(0), j.Get("bool").AsFloat())
 	assert.Equal(t, float64(123), j.Get("number").AsFloat())
@@ -95,7 +96,7 @@ func TestAsFloat64(t *testing.T) {
 }
 
 func TestObjectKeys(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 
 	expected := []string{"string", "bool", "number", "array", "object"}
 	sort.Strings(expected)
@@ -107,7 +108,7 @@ func TestObjectKeys(t *testing.T) {
 }
 
 func TestGetPath(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.Equal(t, "a", j.Get("object.sub[0].1").AsString())
 	assert.Equal(t, "b", j.Get("object.sub[1].1").AsString())
 	assert.True(t, j.Get("object.test.sub2").IsNil())
@@ -115,7 +116,7 @@ func TestGetPath(t *testing.T) {
 }
 
 func TestSet(t *testing.T) {
-	j := New()
+	j := jsonmap.New()
 	assert.True(t, j.Set("", 3.14))
 	assert.Equal(t, 3.14, j.AsFloat())
 
@@ -128,14 +129,14 @@ func TestSet(t *testing.T) {
 	assert.Equal(t, "3.14", j.AsString())
 
 	// Create auto map
-	j = New()
+	j = jsonmap.New()
 	assert.True(t, j.Set("hello", "world"))
 	assert.Equal(t, "world", j.Get("hello").AsString())
 	assert.True(t, j.Set("the.number.pi.is", 3.14))
 	assert.Equal(t, 3.14, j.Get("the.number.pi.is").AsFloat())
 
 	// Can sets array
-	j = FromString(jsonTest)
+	j = jsonmap.FromString(jsonTest)
 	assert.Equal(t, int64(2), j.Get("array[1]").AsInt())
 	assert.True(t, j.Set("array[1]", 3.14))
 	assert.Equal(t, 3.14, j.Get("array[1]").AsFloat())
@@ -154,7 +155,7 @@ func TestSet(t *testing.T) {
 }
 
 func TestWrap(t *testing.T) {
-	j := New()
+	j := jsonmap.New()
 	assert.True(t, j.Set("pi", 3.14))
 
 	wrap := j.Wrap("the.best")
@@ -164,8 +165,8 @@ func TestWrap(t *testing.T) {
 }
 
 func TestForEachArray(t *testing.T) {
-	j := FromString("[1, 2]")
-	j.ForEach(func(k string, v *Json) bool {
+	j := jsonmap.FromString("[1, 2]")
+	j.ForEach(func(k string, v *jsonmap.Json) bool {
 
 		switch k {
 		case "0":
@@ -181,8 +182,8 @@ func TestForEachArray(t *testing.T) {
 }
 
 func TestForEachObject(t *testing.T) {
-	j := FromString(`{ "a": 1, "b": 2 }`)
-	j.ForEach(func(k string, v *Json) bool {
+	j := jsonmap.FromString(`{ "a": 1, "b": 2 }`)
+	j.ForEach(func(k string, v *jsonmap.Json) bool {
 		switch k {
 		case "a":
 			assert.Equal(t, int64(1), v.AsInt())
@@ -197,17 +198,17 @@ func TestForEachObject(t *testing.T) {
 }
 
 func TestKeys(t *testing.T) {
-	keys := FromString("[1, 2]").Keys()
+	keys := jsonmap.FromString("[1, 2]").Keys()
 	assert.Equal(t, 2, len(keys))
 	assert.Subset(t, []string{"0", "1"}, keys)
 
-	keys = FromString(`{ "a": 1, "b": 2 }`).Keys()
+	keys = jsonmap.FromString(`{ "a": 1, "b": 2 }`).Keys()
 	assert.Equal(t, 2, len(keys))
 	assert.Subset(t, []string{"a", "b"}, keys)
 }
 
 func TestValues(t *testing.T) {
-	values := FromString("[1, 2]").Values()
+	values := jsonmap.FromString("[1, 2]").Values()
 	assert.Equal(t, 2, len(values))
 	var d1 []int64
 	for _, v := range values {
@@ -215,7 +216,7 @@ func TestValues(t *testing.T) {
 	}
 	assert.Subset(t, []int64{1, 2}, d1)
 
-	values = FromString(`{ "a": 1, "b": 2 }`).Values()
+	values = jsonmap.FromString(`{ "a": 1, "b": 2 }`).Values()
 	assert.Equal(t, 2, len(values))
 	var d2 []int64
 	for _, v := range values {
@@ -225,7 +226,7 @@ func TestValues(t *testing.T) {
 }
 
 func TestUnset(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.False(t, j.Get("object.sub[0].a").IsNil())
 	assert.True(t, j.Unset("object.sub[0].a"))
 	assert.True(t, j.Get("object.sub[0].a").IsNil())
@@ -236,7 +237,7 @@ func TestUnset(t *testing.T) {
 }
 
 func TestRewrite(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 	assert.False(t, j.Get("object.sub[0].a").IsNil())
 	assert.True(t, j.Rewrite("object.sub[0].a", "new"))
 	assert.True(t, j.Get("object.sub[0].a").IsNil())
@@ -244,12 +245,12 @@ func TestRewrite(t *testing.T) {
 }
 
 type Dummy struct {
-	Raw *Json `json:"raw"`
+	Raw *jsonmap.Json `json:"raw"`
 }
 
 func TestEncodeDecode(t *testing.T) {
 	v := &Dummy{
-		Raw: FromString(jsonTest),
+		Raw: jsonmap.FromString(jsonTest),
 	}
 
 	bytes, err := json.Marshal(v)
@@ -265,16 +266,15 @@ func TestEncodeDecode(t *testing.T) {
 
 	var dummy Dummy
 	assert.NoError(t, json.Unmarshal(bytes, &dummy))
-	assert.JSONEq(t, FromString(jsonTest).Stringify(), dummy.Raw.Stringify())
+	assert.JSONEq(t, jsonmap.FromString(jsonTest).Stringify(), dummy.Raw.Stringify())
 }
 
 func TestClone(t *testing.T) {
-	j := FromString(jsonTest)
+	j := jsonmap.FromString(jsonTest)
 
 	clone := j.Clone()
 
-	assert.False(t, IsNil(clone))
-	assert.False(t, &clone.data == &j.data)
+	assert.False(t, jsonmap.IsNil(clone))
 
 	j.Unset("string")
 	assert.Equal(t, "", j.Get("string").AsString())
