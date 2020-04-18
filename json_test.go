@@ -1,7 +1,6 @@
 package jsonmap
 
 import (
-	"bytes"
 	"encoding/json"
 	"sort"
 	"testing"
@@ -34,7 +33,7 @@ func TestNewJson(t *testing.T) {
 func TestFromWrongString(t *testing.T) {
 	j := FromString("hello")
 	assert.True(t, j.IsNil())
-	assert.Equal(t, "{}", j.Stringify())
+	assert.Equal(t, "null", j.Stringify())
 }
 
 func TestFromString(t *testing.T) {
@@ -253,14 +252,39 @@ func TestEncodeDecode(t *testing.T) {
 		Raw: FromString(jsonTest),
 	}
 
-	// encode
-	buf := &bytes.Buffer{}
-	enc := json.NewEncoder(buf)
-	enc.SetEscapeHTML(true)
-	assert.NoError(t, enc.Encode(v))
-	assert.JSONEq(t, FromString(jsonTest).Wrap("raw").Stringify(), buf.String())
+	bytes, err := json.Marshal(v)
+	assert.NoError(t, err)
+	assert.NotNil(t, bytes)
+
+	// // encode
+	// buf := &bytes.Buffer{}
+	// enc := json.NewEncoder(buf)
+	// enc.SetEscapeHTML(true)	data, err := json.Marshal(v)
+	// assert.NoError(t, enc.Encode(v))
+	// assert.JSONEq(t, FromString(jsonTest).Wrap("raw").Stringify(), buf.String())
 
 	var dummy Dummy
-	assert.NoError(t, json.Unmarshal(buf.Bytes(), &dummy))
+	assert.NoError(t, json.Unmarshal(bytes, &dummy))
 	assert.JSONEq(t, FromString(jsonTest).Stringify(), dummy.Raw.Stringify())
+}
+
+func TestClone(t *testing.T) {
+	j := FromString(jsonTest)
+
+	clone := j.Clone()
+
+	assert.False(t, IsNil(clone))
+	assert.False(t, &clone.data == &j.data)
+
+	j.Unset("string")
+	assert.Equal(t, "", j.Get("string").AsString())
+
+	clone.Set("test", 12345)
+
+	assert.Equal(t, "hello", clone.Get("string").AsString())
+	assert.Equal(t, true, clone.Get("bool").AsBool())
+	assert.Equal(t, float64(123), clone.Get("number").AsFloat())
+	assert.Equal(t, int64(4), clone.Get("object.sub[0].a").AsInt())
+	assert.Equal(t, int64(12345), clone.Get("test").AsInt())
+	assert.Equal(t, int64(0), j.Get("test").AsInt())
 }

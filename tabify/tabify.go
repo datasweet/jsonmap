@@ -3,7 +3,7 @@ package tabify
 import (
 	"errors"
 
-	"github.com/datasweet/jsonmap"
+	"datasweet/jsonmap"
 )
 
 // Tabify using a custom TableWriter
@@ -32,8 +32,8 @@ func JSON(j *jsonmap.Json, opt ...Option) ([]*jsonmap.Json, error) {
 
 // Slice to tabify into a slice array.
 // Note : first row contains headers
-func Slice(j *jsonmap.Json, withHeaders bool, opt ...Option) ([][]interface{}, error) {
-	writer := &sliceTableWriter{WithHeaders: withHeaders}
+func Slice(j *jsonmap.Json, opt ...Option) ([][]interface{}, error) {
+	writer := &sliceTableWriter{}
 	if err := Tabify(j, writer, opt...); err != nil {
 		return nil, err
 	}
@@ -86,14 +86,14 @@ func (t *tabify) Compute(json *jsonmap.Json, tw TableWriter) error {
 		// We need a new row !
 		switch node.eventType {
 		case startRow:
-			// fmt.Println("START ROW", node.key)
+			//fmt.Println("NEWR", node.key)
 			tb.openRow()
 
 		case endRow:
-			// fmt.Println("END ROW", node.key)
+			//fmt.Println("ENDR", node.key)
 			tb.closeRow()
 		default:
-			// fmt.Println("VALUE", node.key, "\t\t = ", node.value)
+			//fmt.Println("CELL ", node.key, "\t\t = ", node.value)
 			tb.cell(node)
 		}
 	}
@@ -115,11 +115,26 @@ func (t *tabify) collect(node *jsonmap.Json, keys ...string) {
 		}
 	} else if node.IsArray() {
 		for _, item := range node.Values() {
-			t.nodes <- newStartRow(t.opts.KeyFormatter(keys))
+			t.nodes <- &nodeValue{
+				eventType: startRow,
+				key:       t.opts.KeyFormatter(keys),
+				deep:      len(keys),
+			}
+
 			t.collect(item, keys...)
-			t.nodes <- newEndRow(t.opts.KeyFormatter(keys))
+
+			t.nodes <- &nodeValue{
+				eventType: endRow,
+				key:       t.opts.KeyFormatter(keys),
+				deep:      len(keys),
+			}
 		}
 	} else if t.opts.KeyExcluder == nil || !t.opts.KeyExcluder(keys) {
-		t.nodes <- newNodeValue(t.opts.KeyFormatter(keys), node.Data())
+		t.nodes <- &nodeValue{
+			eventType: readValue,
+			key:       t.opts.KeyFormatter(keys),
+			deep:      len(keys),
+			value:     node.Data(),
+		}
 	}
 }

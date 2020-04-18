@@ -1,15 +1,15 @@
 [
-    ["byType", "byType#affirmations#byPivot", "byType#affirmations#byPivot#doc_count", "byType#affirmations#byPivot#sumWeight", "byType#affirmations#doc_count", "byType#doc_count"],
-    ["Final", "1", 32, 0, 160, 1],
-    ["Final", "2", 16, 12.900000154972076, 160, 1],
-    ["Final", "3", 48, 42.4000004529953, 160, 1],
-    ["Final", "4", 40, 32.400000393390656, 160, 1],
-    ["Final", "5", 20, 18.000000178813934, 160, 1],
-    ["Final", "6", 4, 3.900000035762787, 160, 1],
-    ["Initial", "1", 32, 0, 160, 1],
-    ["Initial", "2", 16, 12.20000010728836, 160, 1],
-    ["Initial", "3", 48, 39.10000038146973, 160, 1],
-    ["Initial", "4", 40, 36.500000298023224, 160, 1],
-    ["Initial", "5", 20, 17.200000166893005, 160, 1],
-    ["Initial", "6", 4, 2.600000023841858, 160, 1]
+    [ "byType", "byType#doc_count", "byType#affirmations#doc_count", "byType#affirmations#byPivot", "byType#affirmations#byPivot#doc_count", "byType#affirmations#byPivot#sumWeight" ],
+    [ "Final", 1, 160, "1", 32, 0 ],
+    [ "Final", 1, 160, "2", 16, 12.900000154972076 ],
+    [ "Final", 1, 160, "3", 48, 42.4000004529953 ],
+    [ "Final", 1, 160, "4", 40, 32.400000393390656 ],
+    [ "Final", 1, 160, "5", 20, 18.000000178813934 ],
+    [ "Final", 1, 160, "6", 4, 3.900000035762787 ],
+    [ "Initial", 1, 160, "1", 32, 0 ],
+    [ "Initial", 1, 160, "2", 16, 12.20000010728836 ],
+    [ "Initial", 1, 160, "3", 48, 39.10000038146973 ],
+    [ "Initial", 1, 160, "4", 40, 36.500000298023224 ],
+    [ "Initial", 1, 160, "5", 20, 17.200000166893005 ],
+    [ "Initial", 1, 160, "6", 4, 2.600000023841858 ]
 ]

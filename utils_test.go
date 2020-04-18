@@ -3,7 +3,8 @@ package jsonmap_test
 import (
 	"testing"
 
-	"github.com/datasweet/jsonmap"
+	"datasweet/jsonmap"
+
 	"github.com/stretchr/testify/assert"
 )
 
