@@ -444,3 +444,16 @@ func (j *Json) Clone() *Json {
 	}
 	return FromBytes(bytes)
 }
+
+// Merge to merge multiples JSON into a single one
+func Merge(jsons ...*Json) *Json {
+	res := New()
+	m := make(map[string]interface{})
+	for _, j := range jsons {
+		for _, k := range j.Keys() {
+			m[k] = j.AsObject()[k]
+		}
+	}
+	res.data = m
+	return res
+}
