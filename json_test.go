@@ -288,3 +288,21 @@ func TestClone(t *testing.T) {
 	assert.Equal(t, int64(12345), clone.Get("test").AsInt())
 	assert.Equal(t, int64(0), j.Get("test").AsInt())
 }
+
+func TestMerge(t *testing.T) {
+	j := jsonmap.FromString(jsonTest)
+	j2 := jsonmap.FromString(`{
+			"new": "value",
+			"name": "john"
+		}`)
+
+	merge := jsonmap.Merge(j, j2)
+	assert.NotNil(t, merge)
+	assert.Equal(t, "hello", merge.Get("string").AsString())
+	assert.Equal(t, true, merge.Get("bool").AsBool())
+	assert.Equal(t, float64(123), merge.Get("number").AsFloat())
+	assert.Equal(t, int64(4), merge.Get("object.sub[0].a").AsInt())
+	assert.Equal(t, "value", merge.Get("new").AsString())
+	assert.Equal(t, "john", merge.Get("name").AsString())
+	assert.Len(t, merge.Keys(), 7)
+}
