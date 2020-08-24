@@ -109,6 +109,9 @@ func (t *tabify) collect(node *jsonmap.Json, keys ...string) {
 	if jsonmap.IsNil(node) {
 		return
 	}
+	if t.opts.KeyExcluder != nil && len(keys) > 0 && t.opts.KeyExcluder(keys) {
+		return
+	}
 	if node.IsObject() {
 		for _, key := range node.Keys() {
 			t.collect(node.Get(key), append(keys, key)...)
@@ -129,7 +132,7 @@ func (t *tabify) collect(node *jsonmap.Json, keys ...string) {
 				deep:      len(keys),
 			}
 		}
-	} else if t.opts.KeyExcluder == nil || !t.opts.KeyExcluder(keys) {
+	} else {
 		t.nodes <- &nodeValue{
 			eventType: readValue,
 			key:       t.opts.KeyFormatter(keys),

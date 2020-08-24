@@ -36,8 +36,11 @@ func (tb *tableBuffer) cell(val *nodeValue) {
 		tb.openRow()
 	}
 	buffers := tb.buffers[tb.deep]
-	curr := buffers[len(buffers)-1]
-	curr.values = append(curr.values, val)
+	// Patch for nested, because the last node is an empty array for an unknown reason
+	if len(buffers) > 0 {
+		curr := buffers[len(buffers)-1]
+		curr.values = append(curr.values, val)
+	}
 }
 
 func (tb *tableBuffer) getMaxDeep() int {
