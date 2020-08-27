@@ -86,14 +86,14 @@ func (t *tabify) Compute(json *jsonmap.Json, tw TableWriter) error {
 		// We need a new row !
 		switch node.eventType {
 		case startRow:
-			//fmt.Println("NEWR", node.key)
+			//fmt.Println(strings.Repeat("   ", node.deep), "NEWR", node.key)
 			tb.openRow()
 
 		case endRow:
-			//fmt.Println("ENDR", node.key)
+			//fmt.Println(strings.Repeat("   ", node.deep), "ENDR", node.key)
 			tb.closeRow()
 		default:
-			//fmt.Println("CELL ", node.key, "\t\t = ", node.value)
+			//fmt.Println(strings.Repeat("   ", node.deep), "CELL ", node.key, " = ", node.value)
 			tb.cell(node)
 		}
 	}
@@ -117,19 +117,29 @@ func (t *tabify) collect(node *jsonmap.Json, keys ...string) {
 			t.collect(node.Get(key), append(keys, key)...)
 		}
 	} else if node.IsArray() {
-		for _, item := range node.Values() {
-			t.nodes <- &nodeValue{
-				eventType: startRow,
-				key:       t.opts.KeyFormatter(keys),
-				deep:      len(keys),
-			}
 
-			t.collect(item, keys...)
+		nvalues := node.Values()
+		switch l := len(nvalues); l {
+		case 0:
+			return
+		case 1:
+			// treat one line array as object
+			t.collect(nvalues[0], keys...)
+		default:
+			for _, item := range nvalues {
+				t.nodes <- &nodeValue{
+					eventType: startRow,
+					key:       t.opts.KeyFormatter(keys),
+					deep:      len(keys),
+				}
 
-			t.nodes <- &nodeValue{
-				eventType: endRow,
-				key:       t.opts.KeyFormatter(keys),
-				deep:      len(keys),
+				t.collect(item, keys...)
+
+				t.nodes <- &nodeValue{
+					eventType: endRow,
+					key:       t.opts.KeyFormatter(keys),
+					deep:      len(keys),
+				}
 			}
 		}
 	} else {
