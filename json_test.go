@@ -2,6 +2,7 @@ package jsonmap_test
 
 import (
 	"encoding/json"
+	"fmt"
 	"sort"
 	"testing"
 
@@ -24,6 +25,19 @@ const jsonTest = `
 	}
 }
 `
+
+type Person struct {
+	FirstName string
+	Name      string
+	Age       int
+}
+
+func (p *Person) JSON() *jsonmap.Json {
+	j := jsonmap.New()
+	j.Set("name", fmt.Sprintf("%s %s", p.FirstName, p.Name))
+	j.Set("age", p.Age)
+	return j
+}
 
 func TestNewJson(t *testing.T) {
 	j := jsonmap.New()
@@ -116,42 +130,102 @@ func TestGetPath(t *testing.T) {
 }
 
 func TestSet(t *testing.T) {
-	j := jsonmap.New()
-	assert.True(t, j.Set("", 3.14))
-	assert.Equal(t, 3.14, j.AsFloat())
+	t.Run("can set root path", func(t *testing.T) {
+		j := jsonmap.New()
+		assert.True(t, j.Set("", 3.14))
+		assert.JSONEq(t, "3.14", j.Stringify())
+		assert.Equal(t, 3.14, j.AsFloat())
+	})
 
-	// Collision test => try to sets object on value
-	assert.True(t, j.Set("hello", "world"))
-	assert.Equal(t, "world", j.Get("hello").AsString())
+	t.Run("can replace a value by an object", func(t *testing.T) {
+		j := jsonmap.New()
+		assert.True(t, j.Set("", 3.14))
+		assert.True(t, j.Set("hello", "world"))
+		assert.JSONEq(t, `{ "hello": "world" }`, j.Stringify())
+	})
 
-	// Can reinject new value
-	assert.True(t, j.Set("", "3.14"))
-	assert.Equal(t, "3.14", j.AsString())
+	t.Run("can replace an object by a value", func(t *testing.T) {
+		j := jsonmap.New()
+		assert.True(t, j.Set("hello", "world"))
+		assert.True(t, j.Set("", 3.14))
+		assert.JSONEq(t, "3.14", j.Stringify())
+	})
 
-	// Create auto map
-	j = jsonmap.New()
-	assert.True(t, j.Set("hello", "world"))
-	assert.Equal(t, "world", j.Get("hello").AsString())
-	assert.True(t, j.Set("the.number.pi.is", 3.14))
-	assert.Equal(t, 3.14, j.Get("the.number.pi.is").AsFloat())
+	t.Run("can create sub path", func(t *testing.T) {
+		j := jsonmap.New()
+		assert.True(t, j.Set("hello", "world"))
+		assert.True(t, j.Set("the.number.pi.is", 3.14))
+		assert.JSONEq(t, `{ "hello": "world", "the": { "number": { "pi": { "is": 3.14 }}}}`, j.Stringify())
+	})
 
-	// Can sets array
-	j = jsonmap.FromString(jsonTest)
-	assert.Equal(t, int64(2), j.Get("array[1]").AsInt())
-	assert.True(t, j.Set("array[1]", 3.14))
-	assert.Equal(t, 3.14, j.Get("array[1]").AsFloat())
-	assert.Equal(t, "b", j.Get("object.sub[1].1").AsString())
-	assert.True(t, j.Set("object.sub[1].1", 3.14))
-	assert.Equal(t, 3.14, j.Get("object.sub[1].1").AsFloat())
+	t.Run("can create path with escape '.'", func(t *testing.T) {
+		j := jsonmap.New()
+		assert.True(t, j.Set("test\\.machin", 45))
+		assert.True(t, j.Set("choux\\.machin.truc", "bidule"))
+		assert.True(t, j.Set("choux.machin\\.truc", "bidule"))
+		assert.JSONEq(t, `{ "test.machin": 45, "choux.machin": { "truc": "bidule" }, "choux": { "machin.truc": "bidule" }}`, j.Stringify())
+	})
 
-	// can create auto array
-	assert.True(t, j.Set("hello", 1, 2, 3, 4, 5))
-	assert.Subset(t, []int{1, 2, 3, 4, 5}, j.Get("hello").AsArray())
+	t.Run("can set array", func(t *testing.T) {
+		j := jsonmap.New()
+		assert.True(t, j.Set("items", []int{1, 2, 3, 4, 5}))
+		assert.JSONEq(t, `{ "items": [1, 2, 3, 4, 5] }`, j.Stringify())
 
-	assert.True(t, j.Set("test\\.machin", 45))
-	assert.Equal(t, int64(45), j.Get("test\\.machin").AsInt())
-	assert.True(t, j.Set("choux\\.machin.truc", "bidule"))
-	assert.Equal(t, "bidule", j.Get("choux\\.machin.truc").AsString())
+		assert.True(t, j.Set("items[2]", 3.14))
+		assert.JSONEq(t, `{ "items": [1, 2, 3.14, 4, 5] }`, j.Stringify())
+
+		assert.True(t, j.Set("items[3]", &Person{FirstName: "Thomas", Name: "CHARLOT", Age: 36}))
+		assert.JSONEq(t, `{ "items": [1, 2, 3.14, {"name": "Thomas CHARLOT", "age": 36 }, 5] }`, j.Stringify())
+
+		assert.True(t, j.Set("items[3].age", 37))
+		assert.JSONEq(t, `{ "items": [1, 2, 3.14, {"name": "Thomas CHARLOT", "age": 37 }, 5] }`, j.Stringify())
+
+		assert.False(t, j.Set("items[7]", 11))
+		assert.JSONEq(t, `{ "items": [1, 2, 3.14, {"name": "Thomas CHARLOT", "age": 37 }, 5] }`, j.Stringify())
+	})
+
+	t.Run("can set nil", func(t *testing.T) {
+		j := jsonmap.New()
+		assert.True(t, j.Set("nil", nil))
+		assert.JSONEq(t, `{ "nil": null }`, j.Stringify())
+	})
+
+	t.Run("can set a sub json", func(t *testing.T) {
+		j := jsonmap.New()
+		sub := jsonmap.New()
+		assert.True(t, sub.Set("pi", 3.14))
+		assert.True(t, j.Set("wrapped", sub))
+		assert.JSONEq(t, `{ "wrapped": { "pi": 3.14 }}`, j.Stringify())
+	})
+
+	t.Run("can set a json array", func(t *testing.T) {
+		j := jsonmap.New()
+		items := []*jsonmap.Json{
+			jsonmap.FromString(`{ "string": "hello" }`),
+			jsonmap.FromString(`{ "bool": true }`),
+			jsonmap.FromString(`{ "number": 3.14 }`),
+			jsonmap.FromString(`{ "array": [1,2,3,4,5] }`),
+			jsonmap.FromString(`{ "object": { "a": 4, "1": "a" }}`),
+			jsonmap.Nil(),
+		}
+
+		assert.True(t, j.Set("items", items))
+		assert.JSONEq(t,
+			`{ "items": [{ "string": "hello" }, { "bool": true }, { "number": 3.14 }, { "array": [1,2,3,4,5] }, { "object": { "a": 4, "1": "a" }}, null ]}`,
+			j.Stringify(),
+		)
+	})
+
+	t.Run("can set a jsonizer", func(t *testing.T) {
+		j := jsonmap.New()
+		person := &Person{FirstName: "Thomas", Name: "CHARLOT", Age: 36}
+		assert.True(t, j.Set("person", person))
+		assert.JSONEq(t,
+			`{ "person": { "name": "Thomas CHARLOT", "age": 36 }}`,
+			j.Stringify(),
+		)
+
+	})
 }
 
 func TestWrap(t *testing.T) {
