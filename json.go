@@ -12,6 +12,11 @@ type Json struct {
 	data interface{}
 }
 
+// A Jsonizer can converts to a json
+type Jsonizer interface {
+	JSON() *Json
+}
+
 // New creates an empty object Json, ie {}
 func New() *Json {
 	return &Json{
@@ -239,20 +244,46 @@ func (j *Json) Has(path string) bool {
 
 // Set sets the value at path of object. If a portion of path doesn't exist, it's created.
 // Arrays are created for missing index properties while objects are created for all other missing properties
-func (j *Json) Set(path string, value ...interface{}) bool {
+func (j *Json) Set(path string, value interface{}) bool {
 	keys := createPath(path)
 	lastIndex := len(keys) - 1
 
 	// Pick value
 	var newValue interface{}
-	lv := len(value)
 
-	if lv == 0 {
-		newValue = nil
-	} else if lv == 1 {
-		newValue = value[0]
-	} else {
-		newValue = value
+	switch cv := value.(type) {
+	case Jsonizer:
+		if jsub := cv.JSON(); jsub != nil {
+			newValue = jsub.data
+		}
+
+	case *Json:
+		newValue = cv.data
+
+	case []*Json:
+		datas := make([]interface{}, 0, len(cv))
+		for _, item := range cv {
+			datas = append(datas, item.data)
+		}
+		newValue = datas
+
+	case []interface{}:
+		newValue = cv
+
+	default:
+		rv := reflect.ValueOf(value)
+		kind := rv.Kind()
+
+		if kind == reflect.Array || kind == reflect.Slice {
+			l := rv.Len()
+			datas := make([]interface{}, l)
+			for i := 0; i < l; i++ {
+				datas[i] = rv.Index(i).Interface()
+			}
+			newValue = datas
+		} else {
+			newValue = value
+		}
 	}
 
 	if lastIndex == -1 {
@@ -281,14 +312,8 @@ func (j *Json) Set(path string, value ...interface{}) bool {
 		if a := curr.AsArray(); a != nil {
 			// Must be an int
 			idx, e := strconv.Atoi(k)
-			if e != nil || idx < 0 {
+			if e != nil || idx < 0 || idx >= len(a) {
 				return false
-			}
-
-			if idx >= len(a) {
-				for q := len(a); q <= idx; q++ {
-					a = append(a, nil)
-				}
 			}
 
 			// Assign value
@@ -316,15 +341,6 @@ func (j *Json) Set(path string, value ...interface{}) bool {
 	}
 
 	return false
-}
-
-// SetJSON to sets a json or an array of json to path
-func (j *Json) SetJSON(path string, json ...*Json) bool {
-	var d []interface{}
-	for _, o := range json {
-		d = append(d, o.data)
-	}
-	return j.Set(path, d...)
 }
 
 // Unset deletes the value
@@ -380,7 +396,7 @@ func (j *Json) Rewrite(oldPath string, newPath string) bool {
 // Returns the new parent or nilJson if error
 func (j *Json) Wrap(path string) *Json {
 	wrap := New()
-	if !wrap.Set(path, j.data) {
+	if !wrap.Set(path, j) {
 		return Nil()
 	}
 	return wrap
