@@ -224,7 +224,31 @@ func TestSet(t *testing.T) {
 			`{ "person": { "name": "Thomas CHARLOT", "age": 36 }}`,
 			j.Stringify(),
 		)
+	})
 
+	t.Run("can set a nil jsonizer", func(t *testing.T) {
+		j := jsonmap.New()
+		var person *Person
+		assert.Nil(t, person)
+		assert.True(t, j.Set("person", person))
+		assert.JSONEq(t,
+			`{ "person": null }`,
+			j.Stringify(),
+		)
+	})
+
+	t.Run("can set an array of jsonizer", func(t *testing.T) {
+		j := jsonmap.New()
+		peoples := []*Person{
+			&Person{FirstName: "Thomas", Name: "CHARLOT", Age: 36},
+			nil,
+			&Person{FirstName: "Lionel", Name: "FROMENT", Age: 46},
+		}
+		assert.True(t, j.Set("peoples", peoples))
+		assert.JSONEq(t,
+			`{ "peoples": [{ "name": "Thomas CHARLOT", "age": 36 }, null, { "name": "Lionel FROMENT", "age": 46 }]}`,
+			j.Stringify(),
+		)
 	})
 }
 

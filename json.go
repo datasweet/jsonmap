@@ -17,6 +17,16 @@ type Jsonizer interface {
 	JSON() *Json
 }
 
+func jsonize(j Jsonizer) *Json {
+	if j == nil {
+		return Nil()
+	}
+	if rv := reflect.ValueOf(j); rv.IsNil() {
+		return Nil()
+	}
+	return j.JSON()
+}
+
 // New creates an empty object Json, ie {}
 func New() *Json {
 	return &Json{
@@ -253,9 +263,7 @@ func (j *Json) Set(path string, value interface{}) bool {
 
 	switch cv := value.(type) {
 	case Jsonizer:
-		if jsub := cv.JSON(); jsub != nil {
-			newValue = jsub.data
-		}
+		newValue = jsonize(cv).data
 
 	case *Json:
 		newValue = cv.data
@@ -278,7 +286,17 @@ func (j *Json) Set(path string, value interface{}) bool {
 			l := rv.Len()
 			datas := make([]interface{}, l)
 			for i := 0; i < l; i++ {
-				datas[i] = rv.Index(i).Interface()
+				val := rv.Index(i)
+				if !val.CanInterface() {
+					continue
+				}
+
+				if jsonizer, ok := val.Interface().(Jsonizer); ok {
+					datas[i] = jsonize(jsonizer).data
+					continue
+				}
+
+				datas[i] = val.Interface()
 			}
 			newValue = datas
 		} else {
