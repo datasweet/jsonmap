@@ -2,7 +2,7 @@ package tabify_test
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 
@@ -21,6 +21,10 @@ func TestHistogramAgg(t *testing.T) {
 
 func TestNested(t *testing.T) {
 	testfile(t, "nested_agg")
+}
+
+func TestDoubleTerms(t *testing.T) {
+	testfile(t, "terms_terms_sum_agg")
 }
 
 func TestTripleAgg(t *testing.T) {
@@ -50,41 +54,46 @@ func testfile(t *testing.T, filename string) {
 	}
 
 	// SliceTableWriter
-	st, err := tabify.Slice(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
-	assert.NoError(t, err, "slice table writer")
-	stw := readJSON(t, "./tests/"+filename+"_slice.json")
-	var arr []interface{}
-	assert.NoError(t, json.Unmarshal([]byte(stw), &arr))
-	assert.Equal(t, len(arr), len(st))
-	for i, row := range arr {
-		assert.Equalf(t, row, st[i], "at index %d", i)
-	}
+	t.Run("can write to slice "+filename, func(t *testing.T) {
+		st, err := tabify.Slice(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
+		assert.NoError(t, err, "slice table writer")
+		stw := readJSON(t, "./tests/"+filename+"_slice.json")
+		var arr []interface{}
+		assert.NoError(t, json.Unmarshal([]byte(stw), &arr))
+		assert.Equal(t, len(arr), len(st))
+		for i, row := range arr {
+			assert.Equalf(t, row, st[i], "at index %d", i)
+		}
 
-	//assert.JSONEq(t, stw, mst.String(), "slice table writer")
+		//assert.JSONEq(t, stw, mst.String(), "slice table writer")
+	})
 
 	// MapTableWriter
-	// mt, err := tabify.Map(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
-	// assert.NoError(t, err, "map table writer")
-	// mmt, err := json.Marshal(mt)
-	// if err != nil {
-	// 	t.Fatal("slice json marshal")
-	// }
-	// mtw := readJSON(t, "./tests/"+filename+"_expected.json")
-	// assert.JSONEq(t, mtw, string(mmt[:]), "map table writer")
+	t.Run("can write to map "+filename, func(t *testing.T) {
+		mt, err := tabify.Map(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
+		assert.NoError(t, err, "map table writer")
+		mmt, err := json.Marshal(mt)
+		if err != nil {
+			t.Fatal("slice json marshal")
+		}
+		mtw := readJSON(t, "./tests/"+filename+"_expected.json")
+		assert.JSONEq(t, mtw, string(mmt[:]), "map table writer")
+	})
 
-	// // JSONTableWriter
-	// jt, err := tabify.JSON(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
-	// assert.NoError(t, err, "json table writer")
-	// jtw := readJSON(t, "./tests/"+filename+"_expected.json")
-	// jo := jsonmap.New()
-	// jo.Set("", jt)
-	// assert.JSONEq(t, jtw, jo.Stringify(), "json table writer")
-
+	// JSONTableWriter
+	t.Run("can write to json "+filename, func(t *testing.T) {
+		jt, err := tabify.JSON(src, tabify.KeyExcluder(excluder), tabify.KeyFormatter(formatter))
+		assert.NoError(t, err, "json table writer")
+		jtw := readJSON(t, "./tests/"+filename+"_expected.json")
+		jo := jsonmap.New()
+		jo.Set("", jt)
+		assert.JSONEq(t, jtw, jo.Stringify(), "json table writer")
+	})
 }
 
 // readJSON to read a json file and store to a jsonmap
 func readJSON(t *testing.T, filename string) string {
-	data, err := ioutil.ReadFile(filename)
+	data, err := os.ReadFile(filename)
 	if err != nil {
 		t.Fatalf("unable to read %s", filename)
 	}

@@ -1,0 +1,12 @@
+[
+    ["2", "2#doc_count", "2#1", "2#3", "2#3#doc_count", "2#3#1"],
+    ["HAMLET",1582,94547,"Hamlet",1582,94547 ],
+    ["IAGO",1161,76899,"Othello",1161,76899 ],
+    ["BIRON",647,71866,"Loves Labours Lost",647,71866 ],
+    ["OTHELLO",928,62945,"Othello",928,62945 ],
+    ["GLOUCESTER",1920,60243,"Richard III",743,28740 ],
+    ["GLOUCESTER",1920,60243,"King Lear",364,9809 ],
+    ["GLOUCESTER",1920,60243,"Henry VI Part 3",266,9238 ],
+    ["GLOUCESTER",1920,60243,"Henry VI Part 2",320,9156 ],
+    ["GLOUCESTER",1920,60243,"Henry VI Part 1",222,3161]
+  ]

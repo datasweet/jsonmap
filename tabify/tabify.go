@@ -117,29 +117,20 @@ func (t *tabify) collect(node *jsonmap.Json, keys ...string) {
 			t.collect(node.Get(key), append(keys, key)...)
 		}
 	} else if node.IsArray() {
-
 		nvalues := node.Values()
-		switch l := len(nvalues); l {
-		case 0:
-			return
-		case 1:
-			// treat one line array as object
-			t.collect(nvalues[0], keys...)
-		default:
-			for _, item := range nvalues {
-				t.nodes <- &nodeValue{
-					eventType: startRow,
-					key:       t.opts.KeyFormatter(keys),
-					deep:      len(keys),
-				}
+		for _, item := range nvalues {
+			t.nodes <- &nodeValue{
+				eventType: startRow,
+				key:       t.opts.KeyFormatter(keys),
+				deep:      len(keys),
+			}
 
-				t.collect(item, keys...)
+			t.collect(item, keys...)
 
-				t.nodes <- &nodeValue{
-					eventType: endRow,
-					key:       t.opts.KeyFormatter(keys),
-					deep:      len(keys),
-				}
+			t.nodes <- &nodeValue{
+				eventType: endRow,
+				key:       t.opts.KeyFormatter(keys),
+				deep:      len(keys),
 			}
 		}
 	} else {

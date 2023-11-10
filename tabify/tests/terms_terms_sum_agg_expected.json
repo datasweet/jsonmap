@@ -1,0 +1,11 @@
+[
+  { "2": "HAMLET", "2#doc_count": 1582, "2#1": 94547, "2#3": "Hamlet", "2#3#doc_count": 1582, "2#3#1": 94547 },
+  { "2": "IAGO", "2#doc_count": 1161, "2#1": 76899, "2#3": "Othello", "2#3#doc_count": 1161, "2#3#1": 76899 },
+  { "2": "BIRON", "2#doc_count": 647, "2#1": 71866, "2#3": "Loves Labours Lost", "2#3#doc_count": 647, "2#3#1": 71866 },
+  { "2": "OTHELLO", "2#doc_count": 928, "2#1": 62945, "2#3": "Othello", "2#3#doc_count": 928, "2#3#1": 62945 },
+  { "2": "GLOUCESTER", "2#doc_count": 1920, "2#1": 60243, "2#3": "Richard III", "2#3#doc_count": 743, "2#3#1": 28740 },
+  { "2": "GLOUCESTER", "2#doc_count": 1920, "2#1": 60243, "2#3": "King Lear", "2#3#doc_count": 364, "2#3#1": 9809 },
+  { "2": "GLOUCESTER", "2#doc_count": 1920, "2#1": 60243, "2#3": "Henry VI Part 3", "2#3#doc_count": 266, "2#3#1": 9238 },
+  { "2": "GLOUCESTER", "2#doc_count": 1920, "2#1": 60243, "2#3": "Henry VI Part 2", "2#3#doc_count": 320, "2#3#1": 9156 },
+  { "2": "GLOUCESTER", "2#doc_count": 1920, "2#1": 60243, "2#3": "Henry VI Part 1", "2#3#doc_count": 222, "2#3#1": 3161 }
+]

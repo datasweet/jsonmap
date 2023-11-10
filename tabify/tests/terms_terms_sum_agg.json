@@ -1,0 +1,152 @@
+{
+    "took": 4,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": 111396,
+        "max_score": 0,
+        "hits": []
+    },
+    "aggregations": {
+        "2": {
+            "doc_count_error_upper_bound": -1,
+            "sum_other_doc_count": 105158,
+            "buckets": [
+                {
+                    "1": {
+                        "value": 94547
+                    },
+                    "3": {
+                        "doc_count_error_upper_bound": 0,
+                        "sum_other_doc_count": 0,
+                        "buckets": [
+                            {
+                                "1": {
+                                    "value": 94547
+                                },
+                                "key": "Hamlet",
+                                "doc_count": 1582
+                            }
+                        ]
+                    },
+                    "key": "HAMLET",
+                    "doc_count": 1582
+                },
+                {
+                    "1": {
+                        "value": 76899
+                    },
+                    "3": {
+                        "doc_count_error_upper_bound": 0,
+                        "sum_other_doc_count": 0,
+                        "buckets": [
+                            {
+                                "1": {
+                                    "value": 76899
+                                },
+                                "key": "Othello",
+                                "doc_count": 1161
+                            }
+                        ]
+                    },
+                    "key": "IAGO",
+                    "doc_count": 1161
+                },
+                {
+                    "1": {
+                        "value": 71866
+                    },
+                    "3": {
+                        "doc_count_error_upper_bound": 0,
+                        "sum_other_doc_count": 0,
+                        "buckets": [
+                            {
+                                "1": {
+                                    "value": 71866
+                                },
+                                "key": "Loves Labours Lost",
+                                "doc_count": 647
+                            }
+                        ]
+                    },
+                    "key": "BIRON",
+                    "doc_count": 647
+                },
+                {
+                    "1": {
+                        "value": 62945
+                    },
+                    "3": {
+                        "doc_count_error_upper_bound": 0,
+                        "sum_other_doc_count": 0,
+                        "buckets": [
+                            {
+                                "1": {
+                                    "value": 62945
+                                },
+                                "key": "Othello",
+                                "doc_count": 928
+                            }
+                        ]
+                    },
+                    "key": "OTHELLO",
+                    "doc_count": 928
+                },
+                {
+                    "1": {
+                        "value": 60243
+                    },
+                    "3": {
+                        "doc_count_error_upper_bound": 0,
+                        "sum_other_doc_count": 5,
+                        "buckets": [
+                            {
+                                "1": {
+                                    "value": 28740
+                                },
+                                "key": "Richard III",
+                                "doc_count": 743
+                            },
+                            {
+                                "1": {
+                                    "value": 9809
+                                },
+                                "key": "King Lear",
+                                "doc_count": 364
+                            },
+                            {
+                                "1": {
+                                    "value": 9238
+                                },
+                                "key": "Henry VI Part 3",
+                                "doc_count": 266
+                            },
+                            {
+                                "1": {
+                                    "value": 9156
+                                },
+                                "key": "Henry VI Part 2",
+                                "doc_count": 320
+                            },
+                            {
+                                "1": {
+                                    "value": 3161
+                                },
+                                "key": "Henry VI Part 1",
+                                "doc_count": 222
+                            }
+                        ]
+                    },
+                    "key": "GLOUCESTER",
+                    "doc_count": 1920
+                }
+            ]
+        }
+    },
+    "status": 200
+}
